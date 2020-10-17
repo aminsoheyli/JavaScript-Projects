@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React from "react";
 
 const Like = (props) => {
   const classes = props.liked ? "fa fa-heart" : "fa fa-heart-o";

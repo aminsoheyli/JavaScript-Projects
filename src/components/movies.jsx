@@ -1,15 +1,14 @@
 import React, { Component, Fragment } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import Like from "./common/like";
+import Pagination from "./common/pagination";
+import { paginate } from "../utils/paginate";
 
 class Movies extends Component {
-  state = { movies: getMovies() };
+  state = { movies: getMovies(), pageSize: 4, currentPage: 1 };
 
   handleDelete = (movie) => {
     const movies = this.state.movies.filter((m) => m._id !== movie._id);
-    // const newMovies = [...this.state.movies];
-    // const index = newMovies.indexOf(movie);
-    // newMovies.splice(index, 1);
     this.setState({ movies });
   };
 
@@ -17,13 +16,20 @@ class Movies extends Component {
     const movies = [...this.state.movies];
     const index = movies.indexOf(movie);
     movies[index].liked = !movies[index].liked;
-    this.setState({movies})
+    this.setState({ movies });
+  };
+
+  handlePageChange = (page) => {
+    this.setState({ currentPage: page });
   };
 
   render() {
     const { length: count } = this.state.movies;
+    const { pageSize, currentPage, movies: allMovies } = this.state;
 
     if (count === 0) return <p>There are no movies in the database.</p>;
+
+    const movies = paginate(allMovies, currentPage, pageSize);
 
     return (
       <Fragment>
@@ -42,9 +48,9 @@ class Movies extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.movies.map((movie, index) => (
+            {movies.map((movie, index) => (
               <tr key={movie._id}>
-                <th scope="row">{index + 1}</th>
+                <th scope="row">{(currentPage - 1) * pageSize + index + 1}</th>
                 <td>{movie.title}</td>
                 <td>{movie.genre.name}</td>
                 <td>{movie.numberInStock}</td>
@@ -67,6 +73,12 @@ class Movies extends Component {
             ))}
           </tbody>
         </table>
+        <Pagination
+          itemsCount={count}
+          pageSize={pageSize}
+          currentPage={currentPage}
+          onPageChange={this.handlePageChange}
+        />
       </Fragment>
     );
   }
