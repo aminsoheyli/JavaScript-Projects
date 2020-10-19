@@ -29,14 +29,14 @@ class TableHeader extends Component {
             column.path ? (
               <th
                 className="clickable"
-                key={column.path || column.key}
+                key={column.path}
                 onClick={() => this.raiseSort(column.path)}
               >
                 {column.label}
                 {this.renderSortIcon(column)}
               </th>
             ) : (
-              <th></th>
+              <th key={column.key}></th>
             )
           )}
         </tr>
