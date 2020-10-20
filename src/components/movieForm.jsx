@@ -10,7 +10,7 @@ class MovieForm extends Form {
       title: "",
       genreId: "",
       numberInStock: "",
-      rate: "",
+      dailyRentalRate: "",
     },
     genres: [],
     errors: {},
@@ -25,7 +25,11 @@ class MovieForm extends Form {
       .min(0)
       .max(1000)
       .label("Number in Stock"),
-    rate: Joi.number().required().min(1).max(10).label("Daily Rental Rate"),
+    dailyRentalRate: Joi.number()
+      .required()
+      .min(1)
+      .max(10)
+      .label("Daily Rental Rate"),
   };
 
   componentDidMount() {
@@ -34,28 +38,26 @@ class MovieForm extends Form {
 
     const movieId = this.props.match.params.id;
     if (movieId === "new") return;
-    console.log(this.props)
 
     const movie = getMovie(movieId);
     if (!movie) return this.props.history.replace("/not-found");
 
-    this.setState({ data: this.mapToViewModel(movie)  });
+    this.setState({ data: this.mapToViewModel(movie) });
   }
 
-  mapToViewModel(movie){
-    return{
+  mapToViewModel(movie) {
+    return {
       _id: movie._id,
       title: movie.title,
-      genreId: movie.genreId,
+      genreId: movie.genre._id,
       numberInStock: movie.numberInStock,
-      dailyRentalRate: movie.dailyRentalRate
-    }
+      dailyRentalRate: movie.dailyRentalRate,
+    };
   }
 
   doSubmit = () => {
-    saveMovie(this.state.data)
-
-    this.props.history.push('/movies')
+    saveMovie(this.state.data);
+    this.props.history.push("/movies");
   };
 
   render() {
@@ -64,9 +66,9 @@ class MovieForm extends Form {
         <h1>Movie Form</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("title", "Title")}
-          {this.renderSelect("genreId", "Genre",this.state.genres)}
+          {this.renderSelect("genreId", "Genre", this.state.genres)}
           {this.renderInput("numberInStock", "Number in Stock")}
-          {this.renderInput("rate", "Rate")}
+          {this.renderInput("dailyRentalRate", "Rate")}
           {this.renderButton("Save")}
         </form>
       </div>
