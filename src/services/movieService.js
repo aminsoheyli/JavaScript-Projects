@@ -24,6 +24,6 @@ export function saveMovie(movie) {
   return http.post(apiEndpoint, movie);
 }
 
-export async function deleteMovie(movieId) {
+export function deleteMovie(movieId) {
   return http.delete(movieUrl(movieId));
 }
