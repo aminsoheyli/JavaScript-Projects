@@ -18,10 +18,12 @@ class LoginForm extends Form {
   };
 
   doSubmit = async () => {
+    const { onLogin, history } = this.props;
     try {
       const { data } = this.state;
       await auth.login(data.username, data.password);
-      window.location = "/";
+      onLogin();
+      history.replace("/");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };

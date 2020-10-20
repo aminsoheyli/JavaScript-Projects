@@ -22,12 +22,16 @@ class App extends Component {
     this.setState({ user });
   }
 
-  // handleLogin = (jwt) => {
-  //   try {
-  //     const user = jwtDecode(jwt);
-  //     this.setState({ user });
-  //   } catch (ex) {}
-  // };
+  handleLogin = () => {
+    try {
+      const user = auth.getCurrentUser();
+      this.setState({ user });
+    } catch (ex) {}
+  };
+
+  handleLogout = () => {
+    this.setState({ user: null });
+  };
 
   render() {
     return (
@@ -36,9 +40,24 @@ class App extends Component {
         <NavBar user={this.state.user} />
         <main className="container">
           <Switch>
-            <Route path="/register" component={RegisterForm} />
-            <Route path="/login" component={LoginForm} />
-            <Route path="/logout" component={Logout} />
+            <Route
+              path="/register"
+              render={(props) => (
+                <RegisterForm {...props} onLogin={this.handleLogin} />
+              )}
+            />
+            <Route
+              path="/login"
+              render={(props) => (
+                <LoginForm {...props} onLogin={this.handleLogin} />
+              )}
+            />
+            <Route
+              path="/logout"
+              render={(props) => (
+                <Logout {...props} onLogout={this.handleLogout} />
+              )}
+            />
             <Route path="/movies/:id" component={MovieForm} />
             <Route path="/movies" component={Movies} />
             <Route path="/customers" component={Customers} />

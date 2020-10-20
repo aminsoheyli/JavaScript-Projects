@@ -21,11 +21,13 @@ class RegisterForm extends Form {
   };
 
   doSubmit = async () => {
+    const { onLogin, history } = this.props;
     try {
       const response = await register(this.state.data);
       const jwt = response.headers["x-auth-token"];
       auth.loginWithJwt(jwt);
-      window.location = "/";
+      onLogin();
+      history.replace("/");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errors = { ...this.state.errors };

@@ -3,9 +3,10 @@ import auth from "../services/authService";
 
 class Logout extends Component {
   componentDidMount() {
+    const {onLogout, history} = this.props
     auth.logout();
-
-    window.location = "/";
+    onLogout();
+    history.replace("/");
   }
 
   render() {
