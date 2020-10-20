@@ -42,9 +42,15 @@ class Movies extends Component {
     try {
       await deleteMovie(movie._id);
     } catch (ex) {
-      if (ex.response && ex.response.status === 404) console.log("The movie not found.");
-      toast.error("This movie has already been deleted.");
+      if (ex.response && ex.response.status === 404) {
+        console.log("The movie not found");
+        toast.error("This movie has already been deleted.");
+      }
 
+      if (ex.response && ex.response.status === 400) {
+        console.log("You must login.");
+        toast.error("You must login.");
+      }
       this.setState({ movies: originalMovies });
     }
   };
