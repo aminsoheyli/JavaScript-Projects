@@ -3,8 +3,6 @@ import {createSelector} from "reselect/src";
 import {apiCallBegan} from "./api";
 import moment from "moment";
 
-let lastId = 0;
-
 const slice = createSlice({
     name: 'bugs',
     initialState: {
@@ -26,16 +24,17 @@ const slice = createSlice({
         },
         bugAssignedToUser: (bugs, action) => {
             const {bugId, userId} = action.payload;
-            const index = bugs.listfindIndex(bug => bug.id === bugId);
+            const index = bugs.list.findIndex(bug => bug.id === bugId);
             bugs.list[index].userId = userId;
         },
+
+        // command - event
+        // addBug  - bugAdded
         bugAdded: (bugs, action) => {
-            bugs.list.push({
-                id: ++lastId,
-                description: action.payload.description,
-                resolved: false,
-            });
+            bugs.list.push(action.payload);
         },
+
+        // resolveBug (command) - bugResolved (event)
         bugResolved: (bugs, action) => {
             const index = bugs.list.findIndex(bug => bug.id === action.payload.id);
             bugs.list[index].resolved = true;
@@ -57,16 +56,40 @@ export default slice.reducer;
 const url = '/bugs';
 export const loadBugs = () => (dispatch, getState) => {
     const {lastFetch} = getState().entities.bugs;
+
     const diffInMinutes = moment().diff(moment(lastFetch), 'minutes');
     if (diffInMinutes < 10) return;
 
-    dispatch(apiCallBegan({
-        url,
-        onStart: bugsRequested.type,
-        onSuccess: bugsReceived.type,
-        onError: bugsRequestFailed.type
-    }))
+    dispatch(
+        apiCallBegan({
+            url,
+            onStart: bugsRequested.type,
+            onSuccess: bugsReceived.type,
+            onError: bugsRequestFailed.type
+        })
+    );
 };
+
+export const addBug = bug => apiCallBegan({
+    url,
+    method: "post",
+    data: bug,
+    onSuccess: bugAdded.type
+});
+
+export const resolveBug = id => apiCallBegan({
+    url: url + '/' + id,
+    method: 'patch',
+    data: {resolved: true},
+    onSuccess: bugResolved.type
+});
+
+export const assignBugToUser = (bugId, userId) => apiCallBegan({
+    url: url + '/' + bugId,
+    method: 'patch',
+    data: {userId},
+    onSuccess: bugAssignedToUser.type
+})
 
 // Selector
 // export const getUnresolvedBugs = state =>

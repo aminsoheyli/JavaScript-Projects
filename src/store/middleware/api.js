@@ -13,7 +13,6 @@ const api = ({dispatch}) => next => async action => {
 
     next(action);
 
-
     try {
         const response = await axios.request({
             baseURL: 'http://localhost:9001/api',
