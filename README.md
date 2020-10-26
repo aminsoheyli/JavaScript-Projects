@@ -17,6 +17,7 @@ Our local node server will listen to port [9001](http://localhost:9001/api/bugs 
 ### Front-End
 | WARNING: Be careful to start the server first! |
 | --- |
+
 On the root directory
 ```bash
 npm install
