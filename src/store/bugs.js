@@ -1,5 +1,5 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {createSelector} from "reselect/src";
+import {createSelector} from "@reduxjs/toolkit";
 import {apiCallBegan} from "./api";
 import moment from "moment";
 
@@ -60,7 +60,7 @@ export const loadBugs = () => (dispatch, getState) => {
     const diffInMinutes = moment().diff(moment(lastFetch), 'minutes');
     if (diffInMinutes < 10) return;
 
-    dispatch(
+    return dispatch(
         apiCallBegan({
             url,
             onStart: bugsRequested.type,
@@ -98,10 +98,11 @@ export const assignBugToUser = (bugId, userId) => apiCallBegan({
 // Memoization
 export const getUnresolvedBugs = createSelector(
     state => state.entities.bugs,
-    bugs => bugs.filter(bug => !bug.resolved)
+    state => state.entities.projects,
+    (bugs, projects) => bugs.list.filter(bug => !bug.resolved)
 );
 
 export const getBugsByUser = userId => createSelector(
     state => state.entities.bugs,
-    bugs => bugs.filter(bug => bug.userId === userId)
+    bugs => bugs.list.filter(bug => bug.userId === userId)
 );
