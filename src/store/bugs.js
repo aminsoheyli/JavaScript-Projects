@@ -46,7 +46,7 @@ const slice = createSlice({
     }
 })
 
-export const {
+const {
     bugAdded, bugRemoved, bugResolved, bugAssignedToUser,
     bugsReceived, bugsRequested, bugsRequestFailed
 } = slice.actions;
