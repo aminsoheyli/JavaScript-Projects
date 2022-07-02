@@ -1,0 +1,58 @@
+{
+  "name": "redux-starter",
+  "version": "1.0.0",
+  "description": "Redux Starter Project",
+  "main": "index.js",
+  "engines": {
+    "node": "12.x"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "jest --watch"
+  },
+  "keywords": [],
+  "author": "Mosh Hamedani",
+  "license": "ISC",
+  "devDependencies": {
+    "axios-mock-adapter": "^1.19.0"
+  },
+  "dependencies": {
+    "@reduxjs/toolkit": "^1.4.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.5.0",
+    "@testing-library/user-event": "^7.2.1",
+    "axios": "^0.21.0",
+    "bootstrap": "^4.5.3",
+    "font-awesome": "^4.7.0",
+    "joi-browser": "^13.4.0",
+    "jwt-decode": "^3.0.0",
+    "lodash": "^4.17.20",
+    "moment": "^2.29.1",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-redux": "^7.2.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "4.0.0",
+    "react-toastify": "^6.0.9",
+    "redux-devtools-extension": "^2.13.8",
+    "reselect": "^4.0.0",
+    "redux": "^4.0.5"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}
